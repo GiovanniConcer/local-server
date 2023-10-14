@@ -1,0 +1,33 @@
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding-inline: 2rem;
+}
+
+.card {
+    padding: 2rem;
+    border: .15rem solid black;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    max-width: 40rem;
+    gap: 2rem;
+    border-radius: .5rem;
+}
+
+.card img {
+    max-width: 100%;
+    border-radius: 100rem;
+    aspect-ratio: 1/1;
+    object-fit: cover;
+    border: .25rem solid rgb(214, 34, 64);
+}
+
+.card__content {
+    grid-column: span 2;
+}
