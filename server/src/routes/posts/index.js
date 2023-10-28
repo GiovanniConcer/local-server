@@ -1,29 +1,46 @@
 const express = require('express')
+const mongoose = require('mongoose')
 const router = express.Router()
-
 
 // Models
 const Posts = require('../../database/models/Posts')
 
-async function getAllPosts() {
-    const posts = await Posts.find()
-    return posts.map((post)=>{
-        return {
-            id: post._id,
-            title: post.title,
-            body: post.body
-        }
-    })
+function filterPost(post) {
+    return {
+        id: post._id,
+        title: post.title,
+        body: post.body
+    }
 }
 
 router.get('/', async (request, response) => {
-    const posts = await getAllPosts()
-    response.send(posts)
+    const posts = await Posts.find()
+    response.send(posts.map(filterPost))
+})
+
+router.get('/:id', async (request, response) => {
+    try {
+        const { id } = request.params
+        const isValid = mongoose.isValidObjectId(id)
+        if (!isValid) throw Error(`Id ${id} not valid :(`)
+        const post = await Posts.findOne({ _id: id })
+        if (!post) throw Error(`Post with id ${id} not found :(`)
+        response.send({
+            timestamp: Date.now(),
+            message: "Gotcha",
+            data: filterPost(post)
+        })
+    } catch (error) {
+        response.status(404).send({
+            timestamp: Date.now(),
+            message: error.message
+        })
+    }
 })
 
 router.post('/', (request, response) => {
     try {
-        const {title, body} = request.body
+        const { title, body } = request.body
         if (!title) throw Error('missing title')
         if (!body) throw Error('missing body')
         const newPost = new Posts(body)
@@ -33,7 +50,7 @@ router.post('/', (request, response) => {
             message: 'Post created',
             data: newPost
         })
-    } catch(error) {
+    } catch (error) {
         response.status(400).send({
             timestamp: Date.now(),
             message: error.message
@@ -43,8 +60,8 @@ router.post('/', (request, response) => {
 
 router.delete('/:id', async (request, response) => {
     try {
-        const {id} = request.params
-        const deleteResponse = await Posts.deleteOne({_id:id})
+        const { id } = request.params
+        const deleteResponse = await Posts.deleteOne({ _id: id })
         const validation = deleteResponse.deletedCount === 0 && deleteResponse.acknowledged
         if (validation) throw Error(`Post with id ${id} not found :(`)
         response.send({
