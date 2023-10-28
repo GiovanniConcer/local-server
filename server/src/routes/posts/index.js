@@ -41,4 +41,22 @@ router.post('/', (request, response) => {
     }
 })
 
+router.delete('/:id', async (request, response) => {
+    try {
+        const {id} = request.params
+        const deleteResponse = await Posts.deleteOne({_id:id})
+        const validation = deleteResponse.deletedCount === 0 && deleteResponse.acknowledged
+        if (validation) throw Error(`Post with id ${id} not found :(`)
+        response.send({
+            timestamp: Date.now(),
+            message: 'Post deleted',
+        })
+    } catch (error) {
+        response.status(404).send({
+            timestamp: Date.now(),
+            message: error.message
+        })
+    }
+})
+
 module.exports = router
