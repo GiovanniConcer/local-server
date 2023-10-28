@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router()
 
+
 // Models
-const {Posts} = require('../../database')
+const Posts = require('../../database/models/Posts')
 
 async function getAllPosts() {
     const posts = await Posts.find()
