@@ -13,6 +13,13 @@ function filterPost(post) {
     }
 }
 
+function createResponse(msg, data) {
+    return {
+        timestamp: Date.now(),
+        message: msg,
+        data
+    }
+}
 router.get('/', async (request, response) => {
     const posts = await Posts.find()
     response.send(posts.map(filterPost))
@@ -31,30 +38,31 @@ router.get('/:id', async (request, response) => {
             data: filterPost(post)
         })
     } catch (error) {
-        response.status(404).send({
-            timestamp: Date.now(),
-            message: error.message
-        })
+        response.status(404).send(createResponse(error.message, []))
     }
 })
 
-router.post('/', (request, response) => {
+router.post('/', async (request, response) => {
     try {
         const { title, body } = request.body
         if (!title) throw Error('missing title')
         if (!body) throw Error('missing body')
-        const newPost = new Posts(body)
-        newPost.save()
-        response.send({
-            timestamp: Date.now(),
-            message: 'Post created',
-            data: newPost
-        })
+        const newPost = await Posts.create(request.body)
+        response.send(createResponse('Post created', newPost))
     } catch (error) {
-        response.status(400).send({
-            timestamp: Date.now(),
-            message: error.message
-        })
+        response.status(400).send(createResponse(error.message, []))
+    }
+})
+
+router.patch('/:id', async (request, response) => {
+    try {
+        const { id } = request.params
+        const updatedPost = await Posts.updateOne({ _id: id }, { ...request.body })
+        if (!updatedPost.matchedCount) throw Error("Invalid request")
+        response.send(createResponse(`Post updated (id: ${id})`, []))
+
+    } catch (error) {
+        response.status(400).send(createResponse(error.message, []))
     }
 })
 
@@ -67,12 +75,10 @@ router.delete('/:id', async (request, response) => {
         response.send({
             timestamp: Date.now(),
             message: 'Post deleted',
+            data: []
         })
     } catch (error) {
-        response.status(404).send({
-            timestamp: Date.now(),
-            message: error.message
-        })
+        response.status(404).send(createResponse(error.message, []))
     }
 })
 
