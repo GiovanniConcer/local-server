@@ -11,16 +11,16 @@
 
 <body>
     <main class="container">
-        <form class="post__form">
+        <form class="post__form" data-form="posts">
             <label>
                 <span>Title</span>
-                <input type="text" />
+                <input placeholder="title" required="true" name="title" type="text" />
             </label>
             <label>
-                <span>Title</span>
-                <textarea rows="5" cols="30"></textarea>
+                <span>Body</span>
+                <textarea placeholder="yours" required="true" name="body" rows="5" cols="30"></textarea>
             </label>
-            <button type="submit">Enviar</button>
+            <button class="btn" type="submit" data-button="posts">Create</button>
         </form>
         <div class="posts__grid" data-container="posts"></div>
     </main>

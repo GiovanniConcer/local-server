@@ -5,7 +5,14 @@ const router = express.Router()
 // Models
 const Posts = require('../../database/models/Posts')
 
-function filterPost(post) {
+function filterPostCard(post) {
+    return {
+        id: post._id,
+        title: post.title,
+    }
+}
+
+function filterPostPage(post) {
     return {
         id: post._id,
         title: post.title,
@@ -22,7 +29,7 @@ function createResponse(msg, data) {
 }
 router.get('/', async (request, response) => {
     const posts = await Posts.find()
-    response.send(posts.map(filterPost))
+    response.send(posts.map(filterPostCard))
 })
 
 router.get('/:id', async (request, response) => {
@@ -35,7 +42,7 @@ router.get('/:id', async (request, response) => {
         response.send({
             timestamp: Date.now(),
             message: "Gotcha",
-            data: filterPost(post)
+            data: filterPostPage(post)
         })
     } catch (error) {
         response.status(404).send(createResponse(error.message, []))

@@ -3,30 +3,39 @@ body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     min-height: 100vh;
     color: #9e3b4c;
+    background: linear-gradient(0deg, rgb(206, 121, 173) 0%, rgb(193, 221, 214) 100%);
     /* background-image: url("../assets/selfie.jpg"); */
 }
 
-button {
+.btn {
+    background-color: #f0dee1;
     font: inherit;
     padding-inline: 1rem;
     padding-block: .5rem;
     text-transform: uppercase;
     font-weight: bold;
-    border-radius: .2rem;
+    border-radius: 1rem;
     border: 0;
     cursor: pointer;
+    max-width: fit-content;
+    transition: background-color ease 150ms;
 }
 
-button[data-theme="dark"] {
+.btn:hover {
+    background-color: #d6b7bc;
+}
+
+.btn[data-theme="dark"] {
     background-color: black;
     color: white;
 }
 
-button[data-theme="light"] {
+.btn[data-theme="light"] {
     background-color: white;
     color: black;
 }
 
+/* Magic ends here */
 .container {
     max-width: 64rem;
     margin-inline: auto;
@@ -34,6 +43,48 @@ button[data-theme="light"] {
     display: flex;
     flex-direction: column;
     gap: 1rem;
+}
+
+.post__form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 32rem;
+    width: 100%;
+    align-self: center;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.post__form input {
+    padding-block: 0.5rem;
+}
+
+.post__form textarea {
+    min-height: max-content;
+    padding-block: 0.5rem;
+}
+
+.post__form input,
+.post__form textarea {
+    background-color: #f0dee1;
+    border-radius: 1rem;
+    border: 1px solid white;
+    padding-inline: 0.5rem;
+    resize: none;
+}
+
+
+.post__form label {
+    display: flex;
+    gap: .5rem;
+    flex-direction: column;
+}
+
+input:focus,
+textarea:focus {
+    border: 1px solid #9e3b4c;
+    outline: none;
 }
 
 .posts__grid {
@@ -48,25 +99,54 @@ button[data-theme="light"] {
     padding: 2rem;
     background-color: #fdf1f29d;
     border-radius: 1rem;
+    position: relative;
+}
 
+.post__delete {
+    background-color: rgb(245, 172, 172);
+    border: 0;
+    border-radius: 999rem;
+    font-size: .8em;
+    font-weight: bold;
+
+    width: 1.8rem;
+    aspect-ratio: 1/1;
+
+    display: grid;
+    place-content: center;
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+
+    opacity: 0;
+    cursor: pointer;
+    transition: opacity ease-in-out 150ms;
+}
+
+/* Magic starts here */
+/* .post__delete {
+    background-color: rgb(245, 172, 172);
+    font-size: 0.8rem;
+    border-radius: 1rem;
+    float: right;
+    margin: -1.9rem;
+    min-width: 1.8rem;
+    min-height: 1.8rem;
+    padding: 0;
+    visibility: hidden;
+    opacity: 0;
+    transition: 0.2s;
+} */
+
+.post:hover .post__delete {
+    opacity: 1;
+}
+
+.post__delete:hover {
+    background-color: rgb(211, 133, 133);
 }
 
 .post__title {
-    margin-top: 0;
+    margin-block: 0;
     text-transform: uppercase;
-}
-
-.post__form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    max-width: 32rem;
-    width: 100%;
-    align-self: center;
-}
-
-.post__form label {
-    display: flex;
-    flex-direction: column;
-
 }

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post</title>
+
+    <script defer>
+        const BASE_URL = "http://localhost:3000"
+        async function getPost(id) {
+            // console.log(id)
+            const response = await fetch(`${BASE_URL}/posts/${id}`)
+            return await response.json()
+        }
+
+        async function createPostPage() {
+            const id2 = document.querySelector('[data-data="id"]')
+            const title = document.querySelector('[data-data="title"]')
+            const body = document.querySelector('[data-data="body"]')
+            const id = window.location.search.substring(1)
+            const { data } = await getPost(id)
+            // console.log(response.data)
+
+            id2.innerText = "Id: " + data.id
+            title.innerText = "Title: " + data.title
+            body.innerText = "Body: " + data.body
+        }
+
+        document.addEventListener("DOMContentLoaded", createPostPage)
+
+    </script>
+    <style>
+        .link {
+            text-decoration: underline;
+            color: dodgerblue;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <p data-data="id">id</p>
+    <p data-data="title">titulo</p>
+    <p data-data="body">body</p>
+    <img style="cursor: pointer;" src="./assets/link.png" />
+
+</body>
+
+</html>
