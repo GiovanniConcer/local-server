@@ -10,7 +10,20 @@
 </head>
 
 <body>
-    <main class="container" data-container="posts"></main>
+    <main class="container">
+        <form class="post__form">
+            <label>
+                <span>Title</span>
+                <input type="text" />
+            </label>
+            <label>
+                <span>Title</span>
+                <textarea rows="5" cols="30"></textarea>
+            </label>
+            <button type="submit">Enviar</button>
+        </form>
+        <div class="posts__grid" data-container="posts"></div>
+    </main>
 </body>
 
 </html>
